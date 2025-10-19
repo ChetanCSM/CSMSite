@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CoreSysMeta — High‑Tech Intelligence</title>
+  <style>
+    :root{
+      --bg1:#0b1220;
+      --bg2:#0a1a2e;
+      --ink:#e7f2ff;
+      --muted:#9bb3c9;
+      --brand:#37e6ff;
+      --brand-2:#8a5bff;
+      --accent:#2bffb3;
+      --card: rgba(255,255,255,0.06);
+      --stroke: rgba(255,255,255,0.18);
+      --shadow: 0 10px 30px rgba(0,0,0,0.35);
+    }
+
+    /* Global reset */
+    * { box-sizing: border-box; }
+    html,body { height:100%; }
+    body{
+      margin:0;
+      color:var(--ink);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+      background: radial-gradient(1200px 900px at 15% 10%, #12243f66 0%, transparent 60%),
+                  radial-gradient(900px 700px at 85% 80%, #2a0a4f66 0%, transparent 60%),
+                  linear-gradient(120deg, var(--bg1), var(--bg2));
+      background-size: 400% 400%;
+      animation: gradientShift 18s ease-in-out infinite alternate;
+      overflow-x: hidden;
+    }
+
+    /* animated gradient motion */
+    @keyframes gradientShift {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* luminous floating orbs */
+    .orbs::before,
+    .orbs::after{
+      content:"";
+      position: fixed;
+      pointer-events: none;
+      width: 55vmax; height: 55vmax;
+      filter: blur(70px) saturate(140%);
+      opacity: .18;
+      z-index: 0;
+    }
+    .orbs::before{
+      background: radial-gradient(circle at 30% 30%, var(--brand), transparent 55%);
+      top:-10vmax; left:-15vmax;
+      animation: floatA 24s ease-in-out infinite alternate;
+    }
+    .orbs::after{
+      background: radial-gradient(circle at 70% 70%, var(--brand-2), transparent 55%);
+      bottom:-12vmax; right:-18vmax;
+      animation: floatB 26s ease-in-out infinite alternate;
+    }
+    @keyframes floatA { from{ transform: translate(0,0) } to{ transform: translate(3vmax, 2vmax) } }
+    @keyframes floatB { from{ transform: translate(0,0) } to{ transform: translate(-2vmax, -3vmax) } }
+
+    /* Glassmorphism primitives */
+    .glass{
+      background: var(--card);
+      border: 1px solid var(--stroke);
+      backdrop-filter: blur(16px) saturate(120%);
+      -webkit-backdrop-filter: blur(16px) saturate(120%);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    /* Header / Nav */
+    header{
+      position: sticky; top: 0; z-index: 30;
+      padding: 12px 18px;
+    }
+    .nav{
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 16px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:12px;
+    }
+    .brand img{
+      height:40px; width:auto; display:block; filter: drop-shadow(0 2px 8px rgba(55,230,255,.35));
+    }
+    .brand-name{
+      font-weight: 700; letter-spacing: .6px;
+      font-size: 1.05rem; color: var(--ink);
+      opacity:.9;
+    }
+    nav a{
+      color:var(--ink); text-decoration:none;
+      padding:10px 14px; border-radius:12px; opacity:.85;
+      transition: .25s ease;
+    }
+    nav a:hover{
+      background: linear-gradient(120deg, #ffffff14, #ffffff05);
+      opacity:1;
+    }
+    .cta{
+      color:#06121f; background: linear-gradient(135deg, var(--brand), var(--accent));
+      border:none; padding:10px 16px; border-radius:12px;
+      font-weight: 700; cursor: pointer; transition: transform .15s ease, box-shadow .15s ease;
+      box-shadow: 0 8px 24px rgba(55,230,255,.25), inset 0 0 0 1px #ffffff40;
+    }
+    .cta:hover{ transform: translateY(-1px); }
+    .cta:active{ transform: translateY(0); }
+
+    /* Hero */
+    .hero{
+      position: relative; z-index: 1;
+      display:grid; grid-template-columns: 1.2fr .8fr; gap: 28px;
+      padding: clamp(24px, 4vw, 48px);
+      max-width: 1200px; margin: 24px auto 0;
+      align-items: center;
+    }
+    .badge{
+      display:inline-flex; align-items:center; gap:10px;
+      padding:8px 12px; border-radius:999px; font-size:.85rem; color:#bfefff;
+      background: linear-gradient(90deg, #ffffff10, #ffffff05);
+      border:1px solid #ffffff30;
+    }
+    .pulse{
+      width:10px; height:10px; border-radius:50%; background: var(--accent);
+      box-shadow: 0 0 12px var(--accent), 0 0 36px var(--accent);
+      animation: ping 1.8s ease-in-out infinite;
+    }
+    @keyframes ping { 0%{ transform: scale(.8); opacity:.9 } 100%{ transform: scale(1.3); opacity:.4 } }
+
+    .title{
+      margin: 14px 0 8px;
+      font-size: clamp(2.2rem, 5.6vw, 4.2rem);
+      line-height: 1.05;
+      letter-spacing:.6px;
+    }
+
+    /* Neon accent for a single word */
+    .neon{
+      color:#e9fbff;
+      text-shadow:
+        0 0 8px #e9fbff,
+        0 0 18px #e9fbff,
+        0 0 36px var(--brand),
+        0 0 66px var(--brand);
+    }
+
+    .subtitle{
+      color:var(--muted);
+      font-size: clamp(1rem, 2vw, 1.15rem);
+      max-width: 56ch;
+    }
+
+    .hero-actions{
+      display:flex; gap:12px; margin-top:18px; flex-wrap:wrap;
+    }
+    .ghost{
+      border:1px solid #6fdcff66; background: transparent; color:#cfefff;
+      padding:10px 16px; border-radius:12px; cursor:pointer; transition:.25s ease;
+    }
+    .ghost:hover{ background:#6fdcff14 }
+
+    /* Right visual: logo card */
+    .hero-visual{
+      display:grid; place-items:center;
+      min-height: 340px;
+    }
+    .logo-card{
+      position:relative; padding: 24px; aspect-ratio: 4/3.5; width:min(90%, 550px);
+      display:grid; place-items:center; overflow:hidden;
+    }
+    .logo-card::before{
+      content:"";
+      position:absolute; inset:-1px;
+      border-radius: inherit;
+      background:
+        conic-gradient(from 0deg at 50% 50%, #37e6ff33, #8a5bff33, #2bffb333, #37e6ff33);
+      filter: blur(22px);
+      z-index: -1;
+      animation: ring 10s linear infinite;
+      pointer-events: none;
+    }
+    @keyframes ring { to { transform: rotate(1turn) } }
+    .logo-card img{ width: 78%; height:auto; display:block; }
+
+    /* Features grid */
+    .section{
+      position: relative; z-index: 1;
+      padding: 28px clamp(20px,4vw,48px) 64px;
+      max-width: 1200px; margin: 0 auto;
+    }
+    .section h2{
+      margin: 8px 0 12px; font-size: clamp(1.5rem, 3.5vw, 2.1rem);
+      letter-spacing:.3px;
+    }
+    .grid{
+      display:grid; gap:18px;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+    }
+    @media (max-width: 980px){
+      .hero{ grid-template-columns: 1fr; }
+      .grid{ grid-template-columns: 1fr; }
+    }
+
+    .card{
+      position:relative; padding:18px; overflow:hidden; transform-style: preserve-3d;
+      transition: transform .2s ease;
+    }
+    .card:hover{ transform: perspective(800px) rotateX(var(--rx,0)) rotateY(var(--ry,0)) translateZ(8px); }
+    .card .shine{
+      position:absolute; inset:-1px; pointer-events:none;
+      background: radial-gradient(400px 200px at var(--mx,50%) var(--my,50%), #ffffff22, transparent 45%);
+      mix-blend-mode: screen;
+    }
+    .chip{
+      display:inline-flex; padding:6px 10px; font-size:.78rem; border-radius:999px;
+      border:1px solid #ffffff2e; background:#ffffff12; color:#dff7ff; margin-bottom:8px;
+    }
+    .card p{ color: var(--muted); margin:8px 0 0; }
+
+    /* Timeline separator */
+    .divider{
+      height:1px; background: linear-gradient(90deg, transparent, #ffffff25, transparent);
+      margin: 48px 0 24px;
+    }
+
+    /* Footer */
+    footer{
+      position: relative; z-index:1; margin-top: 28px;
+      padding: 18px; color:#cdd7e3;
+    }
+    .foot-wrap{
+      display:flex; justify-content:space-between; align-items:center;
+      gap:12px; flex-wrap:wrap;
+      padding: 16px 18px;
+    }
+    .tiny{ font-size:.9rem; opacity:.8; }
+
+    /* Particle canvas overlay */
+    canvas#fx{
+      position: fixed; inset:0; z-index: 0; pointer-events:none; opacity:.55;
+      mix-blend-mode: screen;
+    }
+
+    /* Accessibility: reduce motion */
+    @media (prefers-reduced-motion: reduce){
+      body, .orbs::before, .orbs::after, .logo-card::before { animation: none !important; }
+    }
+  </style>
+</head>
+<body class="orbs">
+  <canvas id="fx"></canvas>
+
+  <header>
+    <div class="glass nav">
+      <div class="brand">
+        <img src="CoreSysMeta_Logo.jpeg" alt="CoreSysMeta Logo" />
+        <div class="brand-name">CoreSysMeta</div>
+      </div>
+      <nav>
+        <a href="#solutions">Solutions</a>
+        <a href="#research">Research</a>
+        <a href="#about">About</a>
+        <button class="cta" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Contact</button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section class="hero">
+      <div>
+        <span class="badge glass"><span class="pulse"></span> Intelligent systems for decisive businesses</span>
+        <h1 class="title">
+          Engineering <span class="neon">AI‑native</span> data systems for real‑world impact
+        </h1>
+        <p class="subtitle">
+          CoreSysMeta builds end‑to‑end intelligence: streaming data platforms, learning pipelines, and decision engines designed for reliability, scale, and measurable ROI.
+        </p>
+        <div class="hero-actions">
+          <button class="cta" onclick="document.getElementById('solutions').scrollIntoView({behavior:'smooth'})">Explore Solutions</button>
+          <button class="ghost" onclick="document.getElementById('research').scrollIntoView({behavior:'smooth'})">See Research</button>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="glass logo-card">
+          <img src="CoreSysMeta_Logo.jpeg" alt="CoreSysMeta Monogram height=28px" />
+        </div>
+      </div>
+    </section>
+
+    <section id="solutions" class="section">
+      <h2>Solutions</h2>
+      <div class="grid">
+        <article class="glass card">
+          <span class="chip">Real‑time Intelligence</span>
+          <h3>Streaming Analytics</h3>
+          <p>Operational analytics on live event streams with feature stores, online inference, and latency‑aware decisioning.</p>
+          <span class="shine"></span>
+        </article>
+        <article class="glass card">
+          <span class="chip">ML Ops</span>
+          <h3>Model Lifecycle</h3>
+          <p>Reproducible pipelines, evaluation harnesses, monitoring, and automatic rollback with canary and shadow deployments.</p>
+          <span class="shine"></span>
+        </article>
+        <article class="glass card">
+          <span class="chip">Data Systems</span>
+          <h3>Unified Lakehouse</h3>
+          <p>Schema‑evolution, ACID tables, and vector search that bridge analytics with low‑latency applications.</p>
+          <span class="shine"></span>
+        </article>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="grid">
+        <article class="glass card">
+          <span class="chip">Agents</span>
+          <h3>Autonomous Workflows</h3>
+          <p>Multi‑tool agents for research, enrichment, and QA with guardrails, observability, and audit trails.</p>
+          <span class="shine"></span>
+        </article>
+        <article class="glass card">
+          <span class="chip">Security</span>
+          <h3>Trust & Safety</h3>
+          <p>Policy‑aware inference, red‑teaming, and PII governance built into the data plane and serving layers.</p>
+          <span class="shine"></span>
+        </article>
+        <article class="glass card">
+          <span class="chip">Integration</span>
+          <h3>Enterprise Connectors</h3>
+          <p>Reliable ingestion from transactional stores, queues, and SaaS APIs with change‑data‑capture semantics.</p>
+          <span class="shine"></span>
+        </article>
+      </div>
+    </section>
+
+    <section id="research" class="section">
+      <h2>Research</h2>
+      <div class="grid">
+        <article class="glass card">
+          <span class="chip">Optimization</span>
+          <h3>Learning Systems</h3>
+          <p>Efficient training, retrieval‑augmented generation, and uncertainty‑aware decision policies for production scale.</p>
+          <span class="shine"></span>
+        </article>
+        <article class="glass card">
+          <span class="chip">Databases</span>
+          <h3>Indexing & Storage</h3>
+          <p>Cost‑aware query planning, hybrid vector/relational indexes, and adaptive caching for mixed workloads.</p>
+          <span class="shine"></span>
+        </article>
+        <article class="glass card">
+          <span class="chip">Systems</span>
+          <h3>Reliability</h3>
+          <p>Deterministic pipelines, lineage tracking, and guardrailed agents with bounded‑risk execution.</p>
+          <span class="shine"></span>
+        </article>
+      </div>
+    </section>
+
+    <section id="about" class="section">
+      <h2>About</h2>
+      <div class="glass" style="padding:18px">
+        <p style="color:var(--muted); margin:0">
+          CoreSysMeta is an engineering‑first company building AI‑native data systems and pragmatic automation for ambitious teams.
+        </p>
+      </div>
+    </section>
+
+    <section id="contact" class="section">
+      <h2>Contact</h2>
+      <div class="glass" style="padding:18px">
+        <p style="margin:0 0 8px">Write to us:</p><br>
+        <a class="cta" href="contact@coresysmeta.com" onclick="alert('Replace with your preferred contact flow or mailto link.')">Get in touch</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="glass foot-wrap">
+      <div class="brand" style="gap:10px">
+        <img src="CoreSysMeta_Logo.jpeg" alt="CoreSysMeta Logo Small" style="height:50px" />
+        <div class="tiny">© <span id="year"></span> CoreSysMeta Private Limited</div>
+      </div>
+      <div class="tiny">Built with accessibility, performance, and delightful UX in mind.</div>
+    </div>
+  </footer>
+
+  <script>
+    // Year stamp
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Interactive tilt for cards
+    const cards = document.querySelectorAll('.card');
+    cards.forEach(card => {
+      card.addEventListener('pointermove', e => {
+        const r = card.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width;
+        const y = (e.clientY - r.top) / r.height;
+        card.style.setProperty('--rx', `${(0.5 - y) * 8}deg`);
+        card.style.setProperty('--ry', `${(x - 0.5) * 10}deg`);
+        card.style.setProperty('--mx', `${x * 100}%`);
+        card.style.setProperty('--my', `${y * 100}%`);
+      });
+      card.addEventListener('pointerleave', () => {
+        card.style.removeProperty('--rx');
+        card.style.removeProperty('--ry');
+      });
+    });
+
+    // Lightweight particle field on canvas (no external libs)
+    (function(){
+      const c = document.getElementById('fx');
+      const ctx = c.getContext('2d');
+      let w, h, dpr, particles;
+
+      function resize(){
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        w = c.width  = Math.floor(innerWidth * dpr);
+        h = c.height = Math.floor(innerHeight * dpr);
+        c.style.width = innerWidth + 'px';
+        c.style.height = innerHeight + 'px';
+        spawn();
+      }
+
+      function spawn(){
+        const count = Math.floor(Math.sqrt(w*h) / 22);
+        particles = Array.from({length: count}, () => {
+          const speed = (Math.random() * .4 + .2) * dpr;
+          return {
+            x: Math.random() * w,
+            y: Math.random() * h,
+            vx: (Math.random() - .5) * speed,
+            vy: (Math.random() - .5) * speed,
+            r: Math.random() * 1.8 * dpr + .6 * dpr,
+            hue: Math.random() < .5 ? 185 : 265
+          };
+        });
+      }
+
+      function step(){
+        ctx.clearRect(0,0,w,h);
+        for(const p of particles){
+          p.x += p.vx; p.y += p.vy;
+          if(p.x < -50) p.x = w+50; if(p.x > w+50) p.x = -50;
+          if(p.y < -50) p.y = h+50; if(p.y > h+50) p.y = -50;
+
+          const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r*5);
+          g.addColorStop(0, `hsla(${p.hue},100%,70%,.35)`);
+          g.addColorStop(1, `hsla(${p.hue},100%,70%,0)`);
+          ctx.fillStyle = g;
+          ctx.beginPath(); ctx.arc(p.x, p.y, p.r*3, 0, Math.PI*2); ctx.fill();
+
+          ctx.fillStyle = `hsla(${p.hue},100%,65%,.85)`;
+          ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2); ctx.fill();
+        }
+        requestAnimationFrame(step);
+      }
+
+      addEventListener('resize', resize, {passive:true});
+      resize(); step();
+    })();
+  </script>
+</body>
+</html>
