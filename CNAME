@@ -1,1 +1,3 @@
-coresysmeta.com
+Host: www
+Type: CNAME
+Value: coresysmeta.com
