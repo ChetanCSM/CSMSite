@@ -1,81 +1,594 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Under Construction</title>
-  <style>
-    :root {
-      --bg: #0f172a;      /* slate-900 */
-      --fg: #e2e8f0;      /* slate-200 */
-      --muted: rgba(226,232,240,.8);
-    }
-    * { box-sizing: border-box; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>CoreSysMeta | AI & Software Innovation</title>
+    <!-- Google Fonts: Modern, clean sans-serif -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 (free icons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    body {
-      margin: 0;
-      min-height: 100dvh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background:
-        radial-gradient(60vmax 60vmax at 20% -10%, #1e293b 0%, transparent 70%),
-        radial-gradient(50vmax 50vmax at 120% 120%, #0ea5e9 0%, transparent 70%),
-        var(--bg);
-      color: var(--fg);
-      font: 16px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serif;
-      padding: 4vmin;
-    }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            transition: background-color 0.3s ease, color 0.2s ease;
+            line-height: 1.5;
+            scroll-behavior: smooth;
+        }
 
-    main {
-      width: min(920px, 96vw);
-      text-align: center;
-    }
+        /* Light / Dark mode variables */
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f5f7fb;
+            --bg-card: #ffffff;
+            --bg-glass: rgba(255, 255, 255, 0.7);
+            --text-primary: #11181c;
+            --text-secondary: #4a5568;
+            --text-muted: #687076;
+            --border-light: #e2e8f0;
+            --accent: #3b82f6;
+            --accent-glow: rgba(59, 130, 246, 0.25);
+            --accent-hover: #2563eb;
+            --code-bg: #f1f5f9;
+            --shadow-sm: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
+            --shadow-md: 0 20px 25px -12px rgba(0, 0, 0, 0.05);
+        }
 
-    figure {
-      margin: 0 auto 1rem;
-      width: 100%;
-      max-width: 720px;
-    }
+        body.dark {
+            --bg-primary: #0a0c10;
+            --bg-secondary: #0f1117;
+            --bg-card: #13161f;
+            --bg-glass: rgba(18, 22, 32, 0.8);
+            --text-primary: #edf2f7;
+            --text-secondary: #b9c3d4;
+            --text-muted: #8592a6;
+            --border-light: #1f2a3a;
+            --accent: #60a5fa;
+            --accent-glow: rgba(96, 165, 250, 0.2);
+            --accent-hover: #3b82f6;
+            --code-bg: #1a1e2a;
+            --shadow-sm: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 20px 25px -12px rgba(0, 0, 0, 0.4);
+        }
 
-    img.uc {
-      display: block;
-      margin: auto;
-      width: 50%;
-      height: auto;              /* keep aspect ratio */
-      border-radius: 16px;
-      box-shadow: 0 20px 60px rgba(2, 6, 23, 0.45);
-    }
+        /* smooth transitions */
+        a, button, .theme-toggle, .logo-img {
+            transition: all 0.2s ease;
+        }
 
-    h1 {
-      margin: 0.5rem 0 0.25rem;
-      font-weight: 700;
-      letter-spacing: .2px;
-    }
+        /* container utility */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
 
-    p {
-      margin: 0;
-      color: var(--muted);
-    }
-  </style>
+        /* Navbar */
+        .navbar {
+            padding: 1.2rem 0;
+            backdrop-filter: blur(12px);
+            background: var(--bg-glass);
+            border-bottom: 1px solid var(--border-light);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .nav-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-img {
+            height: 48px;
+            width: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.05));
+        }
+
+        .logo-text {
+            font-weight: 700;
+            font-size: 1.55rem;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, var(--accent), #a855f7);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .theme-toggle {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-light);
+            border-radius: 40px;
+            padding: 0.6rem 1rem;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            backdrop-filter: blur(4px);
+        }
+
+        .theme-toggle i {
+            color: var(--text-primary);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 0.7rem 1.6rem;
+            border-radius: 40px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: 0.2s;
+            border: 1px solid transparent;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px var(--accent-glow);
+        }
+
+        .btn-outline {
+            border-color: var(--border-light);
+            background: transparent;
+            color: var(--text-primary);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--accent);
+            background: var(--accent-glow);
+        }
+
+        /* Section spacing */
+        section {
+            padding: 5rem 0;
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, var(--text-primary), var(--accent));
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .section-sub {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 650px;
+            margin-bottom: 3rem;
+        }
+
+        /* Grid */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 2rem;
+            padding: 1.8rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--accent);
+        }
+
+        .card-icon {
+            font-size: 2.2rem;
+            color: var(--accent);
+            margin-bottom: 1.2rem;
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* Coming soon badge */
+        .badge-soon {
+            background: var(--accent-glow);
+            color: var(--accent);
+            border-radius: 30px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 0.25rem 0.8rem;
+            display: inline-block;
+            margin-top: 1rem;
+            letter-spacing: 0.3px;
+        }
+
+        /* Hero specific */
+        .hero {
+            padding-top: 3rem;
+            padding-bottom: 4rem;
+        }
+
+        .hero-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            max-width: 800px;
+        }
+
+        .hero-badge {
+            background: var(--accent-glow);
+            color: var(--accent);
+            padding: 0.3rem 1rem;
+            border-radius: 40px;
+            width: fit-content;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            line-height: 1.2;
+            letter-spacing: -0.03em;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #3b82f6, #c084fc, #60a5fa);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .hero-desc {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+        }
+
+        /* incubation highlight */
+        .incubation {
+            background: var(--bg-secondary);
+            border-radius: 2rem;
+            padding: 0.8rem 1.5rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+            border: 1px solid var(--border-light);
+        }
+
+        /* footer */
+        footer {
+            border-top: 1px solid var(--border-light);
+            padding: 2rem 0;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1.5rem;
+            }
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            section {
+                padding: 3rem 0;
+            }
+            .section-title {
+                font-size: 1.8rem;
+            }
+            .logo-img {
+                height: 40px;
+            }
+            .logo-text {
+                font-size: 1.3rem;
+            }
+        }
+
+        /* high-tech minimal lines */
+        .tech-line {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            width: 100px;
+            margin: 1rem 0;
+        }
+
+        .hover-glow {
+            transition: all 0.2s;
+        }
+    </style>
 </head>
 <body>
-  <main role="main" aria-label="Under construction notice">
-    <figure>
-      <img
-        class="uc"
-        src="under-construction.png"
-        alt="This site is under construction"
-        width="1360"
-	align="centre"
-	height="600"
-        loading="lazy"
-        decoding="async"
-      />
-    </figure>
-    <h1>We’ll be here soon</h1>
-    <p>The best experience is being built — please check again soon.</p>
-  </main>
+
+    <!-- Navigation with theme toggle -->
+    <nav class="navbar">
+        <div class="container nav-inner">
+            <div class="logo-area">
+                <!-- Logo file: we use an inline SVG placeholder but you can replace with actual file.
+                     Since you said "I have the logo file", we create an img with src="logo.png" and fallback 
+                     to an elegant symbol. Replace './logo.png' with actual path. -->
+                <img src="CoreSysMeta_Logo with Name_Right.png" alt="CoreSysMeta Logo" class="logo-img" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Ccircle cx=\'50\' cy=\'50\' r=\'45\' fill=\'%233b82f6\'/%3E%3Ctext x=\'50\' y=\'67\' font-size=\'40\' text-anchor=\'middle\' fill=\'white\' font-weight=\'bold\'%3EC%3C/text%3E%3C/svg%3E';">
+                <!--<span class="logo-text"></span>-->
+            </div>
+            <div class="theme-toggle" id="themeToggle" aria-label="Toggle dark/light mode">
+                <i class="fas fa-moon" id="themeIcon"></i>
+                <span style="font-size: 0.85rem;">Mode</span>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <div class="hero-badge">
+                        <i class="fas fa-microchip"></i> Business @ AI
+                    </div>
+                    <h1>
+                        Where <span class="gradient-text">AI</span> meets<br>
+                        robust <span class="gradient-text">engineering</span>
+                    </h1>
+                    <div class="tech-line"></div>
+                    <p class="hero-desc">
+                        We deliver cutting-edge software development, AI product engineering, 
+                        and specialized training. We’re building the next wave of intelligent systems.
+                    </p>
+                    <div>
+                        <a href="#contact" class="btn btn-primary" style="margin-right: 1rem;">
+                            <i class="fas fa-paper-plane"></i> Contact Us
+                        </a>
+                        <a href="#offerings" class="btn btn-outline">
+                            Explore Offerings <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                    <!--<div class="incubation">
+                        <i class="fas fa-flask"></i> Officially incubated at NIT Delhi — Innovation & Entrepreneurship Cell
+                    </div>-->
+                </div>
+            </div>
+        </section>
+
+        <!-- Offerings Section -->
+        <section id="offerings" style="background: var(--bg-secondary);">
+            <div class="container">
+                <div class="section-title">Core Capabilities</div>
+                <div class="section-sub">
+                    Deep expertise across modern AI stacks and full-cycle software development.
+                </div>
+                <div class="grid-3">
+                    <!-- Card 1: Software Development -->
+                    <div class="card">
+                        <div class="card-icon"><i class="fas fa-code"></i></div>
+                        <h3>Software Dev</h3>
+                        <p>Full-stack, cloud-native, and scalable systems. From MVPs to enterprise-grade platforms, we craft high-performance solutions with modern tech stacks.</p>
+                        <div class="badge-soon">React • Node • Python • Go</div>
+                    </div>
+                    <!-- Card 2: AI Domain Expertise -->
+                    <div class="card">
+                        <div class="card-icon"><i class="fas fa-brain"></i></div>
+                        <h3>AI Product Dev</h3>
+                        <p>End-to-end AI product lifecycle: LLM integration, computer vision, predictive models, and MLOps. Transform ideas into production-ready AI systems.</p>
+                        <div class="badge-soon">Transformers • RAG • Edge AI</div>
+                    </div>
+                    <!-- Card 3: Training & Upskilling -->
+                    <div class="card">
+                        <div class="card-icon"><i class="fas fa-chalkboard-user"></i></div>
+                        <h3>AI Training</h3>
+                        <p>Custom corporate and academic training: prompt engineering, generative AI, data science, and agentic workflows. Empower teams with future skills.</p>
+                        <div class="badge-soon">Workshops • Certifications</div>
+                    </div>
+                </div>
+
+                <!-- Extra offerings row: more nuance -->
+                <div style="margin-top: 3rem;">
+                    <div class="grid-2">
+                        <div class="card">
+                            <div class="card-icon"><i class="fas fa-robot"></i></div>
+                            <h3>Intelligent Automation</h3>
+                            <p>RPA + AI agents to streamline operations, reduce costs, and unlock new efficiencies across industries.</p>
+                        </div>
+                        <div class="card">
+                            <div class="card-icon"><i class="fas fa-database"></i></div>
+                            <h3>Data & Analytics</h3>
+                            <p>Data engineering, BI dashboards, and advanced analytics to turn raw data into strategic assets.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Products in development / coming soon -->
+        <section id="products">
+            <div class="container">
+                <div class="section-title">Products in Pipeline</div>
+                <div class="section-sub">
+                    We are crafting breakthrough AI-native solutions — launching soon.
+                </div>
+                <div class="grid-2">
+                    <div class="card" style="background: var(--bg-card);">
+                        <div class="card-icon"><i class="fas fa-chart-line"></i></div>
+                        <h3>MetaInsight AI</h3>
+                        <p>Advanced analytics copilot for business intelligence. Natural language queries over complex datasets with instant visual insights.</p>
+                        <div class="badge-soon"><i class="fas fa-hourglass-half"></i> Coming Q3 2025</div>
+                    </div>
+                    <div class="card" style="background: var(--bg-card);">
+                        <div class="card-icon"><i class="fas fa-shield-alt"></i></div>
+                        <h3>CoreGuardian</h3>
+                        <p>AI-driven cybersecurity monitoring and anomaly detection platform for real-time threat intelligence.</p>
+                        <div class="badge-soon"><i class="fas fa-flask"></i> Private Beta Soon</div>
+                    </div>
+                </div>
+                <div style="text-align: center; margin-top: 2rem;">
+                    <span class="incubation" style="background: transparent;">
+                        <i class="fas fa-rocket"></i> More revolutionary products being developed — stay tuned!
+                    </span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Why NIT Delhi incubation? -->
+        <section style="background: var(--bg-secondary);">
+            <div class="container">
+                <div class="section-title">Build with us!</div>
+                <div class="section-sub">
+                    Backed by a premier technical institute’s incubation cell, we merge academic rigor with startup velocity.
+                </div>
+                <div style="display: flex; flex-wrap: wrap; gap: 2rem; justify-content: space-between;">
+                    <div style="flex: 1; min-width: 200px;">
+                        <i class="fas fa-users" style="font-size: 2rem; color: var(--accent);"></i>
+                        <h3 style="margin-top: 0.8rem;">Mentorship</h3>
+                        <p style="color: var(--text-secondary);">Access to top faculty and industry leaders.</p>
+                    </div>
+                    <div style="flex: 1; min-width: 200px;">
+                        <i class="fas fa-microscope" style="font-size: 2rem; color: var(--accent);"></i>
+                        <h3 style="margin-top: 0.8rem;">Research DNA</h3>
+                        <p style="color: var(--text-secondary);">Cutting-edge AI research translated into real products.</p>
+                    </div>
+                    <div style="flex: 1; min-width: 200px;">
+                        <i class="fas fa-globe" style="font-size: 2rem; color: var(--accent);"></i>
+                        <h3 style="margin-top: 0.8rem;">Industry Connect</h3>
+                        <p style="color: var(--text-secondary);">Strategic partnerships and ecosystem access.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact section + email -->
+        <section id="contact">
+            <div class="container">
+                <div class="section-title">Let’s shape the future</div>
+                <div class="section-sub">
+                    Ready to build AI-driven solutions or elevate your team’s expertise? Reach out.
+                </div>
+                <div style="background: var(--bg-card); border-radius: 2rem; padding: 2rem; border: 1px solid var(--border-light); max-width: 600px; margin: 0 auto; text-align: center;">
+                    <i class="fas fa-envelope" style="font-size: 2.5rem; color: var(--accent); margin-bottom: 1rem; display: inline-block;"></i>
+                    <h3 style="font-weight: 600; margin-bottom: 0.5rem;">Contact us directly</h3>
+                    <a href="mailto:coresysmeta@gmail.com" style="font-size: 1.4rem; font-weight: 500; color: var(--accent); text-decoration: none; border-bottom: 2px dotted var(--accent);">
+                        coresysmeta@gmail.com
+                    </a>
+                    <p style="margin-top: 1.5rem; color: var(--text-muted);">
+                        <i class="fas fa-clock"></i> Response within 24 hours
+                    </p>
+                    <div style="margin-top: 1.5rem;">
+                        <a href="mailto:coresysmeta@gmail.com?subject=Inquiry%20from%20website" class="btn btn-primary">
+                            <i class="fas fa-paper-plane"></i> Send Email
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div style="display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; margin-bottom: 1rem;">
+                <span><i class="fas fa-map-marker-alt"></i> NIT Delhi, India</span>
+                <span><i class="fas fa-envelope"></i> coresysmeta@gmail.com</span>
+                <span><i class="fas fa-microchip"></i> CoreSysMeta — AI & Software Innovation</span>
+            </div>
+            <p>© 2025 CoreSysMeta | Incubated at NIT Delhi | All trademarks belong to their respective owners.</p>
+            <p style="margin-top: 0.5rem; font-size: 0.75rem;">Products are currently under active development — live releases imminent.</p>
+        </div>
+    </footer>
+
+    <script>
+        (function() {
+            // Theme toggling logic
+            const themeToggle = document.getElementById('themeToggle');
+            const themeIcon = document.getElementById('themeIcon');
+            
+            // Check for saved preference or system preference
+            const storedTheme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            
+            if (storedTheme === 'dark' || (!storedTheme && prefersDark)) {
+                document.body.classList.add('dark');
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            } else {
+                document.body.classList.remove('dark');
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+            }
+            
+            function toggleTheme() {
+                if (document.body.classList.contains('dark')) {
+                    document.body.classList.remove('dark');
+                    localStorage.setItem('theme', 'light');
+                    themeIcon.classList.remove('fa-sun');
+                    themeIcon.classList.add('fa-moon');
+                } else {
+                    document.body.classList.add('dark');
+                    localStorage.setItem('theme', 'dark');
+                    themeIcon.classList.remove('fa-moon');
+                    themeIcon.classList.add('fa-sun');
+                }
+            }
+            
+            themeToggle.addEventListener('click', toggleTheme);
+            
+            // Optional: smooth scroll for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    const href = this.getAttribute('href');
+                    if (href === "#" || href === "") return;
+                    const target = document.querySelector(href);
+                    if (target) {
+                        e.preventDefault();
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+        })();
+    </script>
+    <!-- Note: Replace './logo.png' with your actual logo file path.
+         The inline SVG fallback ensures branding even if logo is missing. -->
 </body>
 </html>
-	
